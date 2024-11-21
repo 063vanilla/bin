@@ -1,0 +1,91 @@
+DAA Prac_2
+
+
+import java.util.*;
+
+class Job 
+{
+    public String id;
+    public int profit;
+    public int deadline;
+
+    Job(String id, int deadline, int profit) 
+    {
+        this.id = id;
+        this.profit = profit;
+        this.deadline = deadline;
+    }
+}
+
+public class Prac_2 
+{
+    void Jobseq(ArrayList<Job> a, int t) 
+    {
+        int n = a.size();
+        String job[] = new String[t];
+        boolean res[] = new boolean[t];
+        int totalProfit = 0;
+
+        for (int i = 0; i < n; i++) 
+        {
+            for (int j = Math.min(t - 1, a.get(i).deadline - 1); j >= 0; j--) 
+            {
+                if (res[j] == false) 
+                {
+                    res[j] = true;
+                    job[j] = a.get(i).id;
+                    totalProfit += a.get(i).profit;
+                    break;
+                }
+            }
+        }
+
+        System.out.print("\nSelected Jobs: ");
+        for (String jb : job) 
+        {
+            if (jb != null) {
+                System.out.print(jb + " ");
+            }
+        }
+        System.out.println();
+
+        System.out.println("Total Profit: " + totalProfit);
+    }
+     
+    public static void main(String args[]) 
+    {
+        Scanner sc = new Scanner(System.in);
+        Prac_2 p1 = new Prac_2();
+        ArrayList<Job> a = new ArrayList<Job>();
+        
+        // Take the number of jobs as input
+        System.out.print("Enter the number of jobs: ");
+        int n = sc.nextInt();
+        
+        // Take job details as input
+        for (int i = 0; i < n; i++) 
+        {
+            System.out.println("\nEnter details for Job " + (i + 1) + ":");
+            System.out.print("Job ID: ");
+            String id = sc.next();
+            System.out.print("Deadline: ");
+            int deadline = sc.nextInt();
+            System.out.print("Profit: ");
+            int profit = sc.nextInt();
+            a.add(new Job(id, deadline, profit));
+        }
+        
+        // Take the number of available slots as input
+        System.out.print("\nEnter the total number of available slots: ");
+        int t = sc.nextInt();
+
+        // Sort jobs by profit in descending order
+        a.sort((p, q) -> q.profit - p.profit);
+
+        // Perform job sequencing
+        p1.Jobseq(a, t);
+
+        sc.close();
+    }
+    
+}
